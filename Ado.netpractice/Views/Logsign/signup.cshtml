@@ -1,0 +1,63 @@
+﻿@model Ado.netpractice.Models.LogSign
+
+
+@{
+    ViewData["Title"] = "signup";
+}
+
+<h1>signup</h1>
+
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group mb-2 w-25">
+    <input type="text" class="form-control" placeholder="username" id="username" />
+    <span asp-validation-for="username" class="text-danger"></span>
+</div>
+<div class="form-group mb-2  w-25">
+    <input type="password" class="form-control" placeholder="password" id="password" />
+    <span asp-validation-for="password" class="text-danger"></span>
+</div>
+<div class="form-group mb-2  w-25">
+
+    <input type="email" class="form-control" placeholder="email" id="email" />
+    <span asp-validation-for="email" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <input type="submit" class="btn btn-primary" onclick="signup()" />
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function signup() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var email = $("#email").val();
+
+
+        $.ajax({
+            url: '@Url.Action("signup", "Logsign")',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                username: username,
+                password: password,
+                email:email
+            },
+            success: function (response) {
+                if (response) {
+                    alert("signed up successfuly")
+                }
+                else {
+                    alert("not signedup")
+                }
+            },
+            error: function (xhr, error, status) {
+                alert("error")
+            }
+
+        })
+    }
+</script>
+

@@ -1,0 +1,58 @@
+﻿#container {
+    height: 81vh;
+    width: 25%;
+    box-shadow: 1px 1px 6px black;
+    border-radius: 8px;
+    margin-left: 35%;
+    margin-top: 3%;
+}
+
+h2 {
+    text-align: center;
+    color: #f9004d;
+    letter-spacing: 1px;
+    padding-top: 5%;
+}
+
+input {
+    height: 6.5vh;
+    width: 85%;
+    border-radius: 5px;
+    margin-bottom: 4%;
+    border: 1px solid #a6acaf;
+    margin-left: 7.5%;
+    padding: 0px 6px 0px 6px;
+    font-size: 1.2vw;
+}
+
+    input::placeholder {
+        padding: 0px 6px 0px 6px;
+        color: gray;
+        font-size: 1vw;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+#button {
+    margin-top: 3%;
+}
+
+    #button input {
+        height: 5vh;
+        width: 30%;
+        margin-left: 35%;
+        background-color: #f9004d;
+        color: white;
+        font-size: 1.2vw;
+        border: none;
+        letter-spacing: 1px;
+        cursor:pointer;
+    }
+p {
+    text-align: center;
+}
+
+    p a {
+        text-decoration: none;
+        margin-left: 1%;
+    }

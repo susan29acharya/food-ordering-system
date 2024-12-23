@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Home\**" />
+    <Compile Remove="Views\logsignup\**" />
+    <Compile Remove="Views\Logsign\**" />
+    <Content Remove="Views\Home\**" />
+    <Content Remove="Views\logsignup\**" />
+    <Content Remove="Views\Logsign\**" />
+    <EmbeddedResource Remove="Views\Home\**" />
+    <EmbeddedResource Remove="Views\logsignup\**" />
+    <EmbeddedResource Remove="Views\Logsign\**" />
+    <None Remove="Views\Home\**" />
+    <None Remove="Views\logsignup\**" />
+    <None Remove="Views\Logsign\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\LogsignController.cs" />
+    <Compile Remove="Models\Car.cs" />
+    <Compile Remove="Models\LogSign.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Product\Dashboard.cshtml" />
+    <Content Remove="Views\Product\Edit.cshtml" />
+    <Content Remove="Views\Product\fetchingdata.cshtml" />
+    <Content Remove="wwwroot\js\datatables.css" />
+    <Content Remove="wwwroot\js\datatables.js" />
+    <Content Remove="wwwroot\js\datatables.min.css" />
+    <Content Remove="wwwroot\js\datatables.min.js" />
+    <Content Remove="wwwroot\js\Login.js" />
+    <Content Remove="wwwroot\js\Signup.js" />
+    <Content Remove="wwwroot\js\Userlogin.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AjaxControlToolkit" Version="20.1.0" />
+    <PackageReference Include="jQuery.Ajax.Unobtrusive" Version="2.0.20710" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+  </ItemGroup>
+
+</Project>

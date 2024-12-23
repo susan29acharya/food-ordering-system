@@ -1,0 +1,352 @@
+﻿@model Ado.netpractice.Models.ProductRequestModel
+
+@{
+    ViewData["Title"] = "GetProductList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<head>
+    <title>getproductlist</title>
+
+</head>
+<body>
+     <div id="DivErrorView" style="display:none;"></div>
+    <h1>Insert Data</h1>
+    <div class="input-group mb-3 w-25">
+        <input type="number" class="form-control" asp-for='ProductId' placeholder="ProductId" aria-label="ProductId" aria-describedby="basic-addon1" hidden>
+    </div>
+    <div class="input-group mb-3 w-25">
+        <input type="text" class="form-control" asp-for='ItemName' placeholder="Product Name" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+   
+
+    <div class="input-group mb-3 w-25">
+        <input type="number" class="form-control" asp-for="Price" placeholder="Price" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+
+    <div class="input-group mb-3 w-25">
+        <input type="number" class="form-control" asp-for="PurchasePrice" placeholder="Purchase price" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+
+    <div class="input-group mb-3 w-25">
+        <input type="number" class="form-control" asp-for="SellingPrice" placeholder="Selling price" aria-label="Username" aria-describedby="basic-addon1" required>
+
+    </div>
+
+    <div class="input-group mb-3 w-25">
+        <input type="number" class="form-control" asp-for="Unit" placeholder="unit" aria-label="Username" aria-describedby="basic-addon1" required>
+
+    </div>
+
+    <div class="input-group mb-3 w-25">
+        <input type="text" class="form-control" asp-for="Description" placeholder="Description" aria-label="Username" aria-describedby="basic-addon1" required>
+
+    </div>
+    <div class=" mb-3 ">
+        <input type="submit" class="btn btn-success" onclick="submit()" id="sbutton" />
+        <input type="submit" class="btn btn-success" onclick="fetchingdatas()" value="fetch" id="fbutton" hidden />
+        <input type="submit" class="btn btn-success" onclick="edit()" value="update" id="ubutton" />
+
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="DeleteModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Deletion</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to Delete?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmdelete" >Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal" tabindex="-1" role="dialog" id="EditModal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Confirmation</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to edit this product?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmEdit">Confirm Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <table class="table table-bordered table-striped table-hover  mb-2" id="listDiv">
+        <thead>
+            <tr style="font-weight: bold;">
+                <td>Itemname</td>
+                <td>Price</td>
+                <td>PurchasePrice</td>
+                <td>SellingPrice</td>
+                <td>Unit</td>
+                <td>Description</td>
+                <td>Other</td>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+    </table>
+
+</body>
+
+</html>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    var ubutton = document.getElementById("ubutton")
+    ubutton.style.display = 'none'
+
+    //ajax function to insert dat into database
+    function submit() {
+        if ($("#ItemName").val() == '' || $("#Price").val() == '' || $("#PurchasePrice").val() == '' || $("#SellingPrice").val() == '' || $("#Unit").val() == '' || $("#Description").val() == '') {
+            document.getElementById('DivErrorView').style.display = 'block';
+            $("#DivErrorView").html('<div class="alert alert-danger">All field is mandatory.</div>');
+            $("#DivErrorView").show();
+            $('#DivErrorView').delay(2000).slideUp();
+        }
+        else {
+            var itemname = $("#ItemName").val();
+            var price = $("#Price").val();
+            var pprice = $("#PurchasePrice").val();
+            var sprice = $("#SellingPrice").val();
+            var unit = $("#Unit").val();
+            var desc = $("#Description").val();
+
+            $.ajax({
+                url: '@Url.Action("InsertProductList", "Product")',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    ItemName: itemname,
+                    Price: price,
+                    PurchasePrice: pprice,
+                    SellingPrice: sprice,
+                    Unit: unit,
+                    Description: desc
+                },
+                success: function (respo) {
+                    if (respo) {
+                        $("#ProductId").val('');
+                        $("#ItemName").val('');
+                        $("#Price").val('');
+                        $("#PurchasePrice").val('');
+                        $("#SellingPrice").val('');
+                        $("#Unit").val('');
+                        $("#Description").val('');
+                        document.getElementById('DivErrorView').style.display = 'block';
+                        $("#DivErrorView").html('<div class="alert alert-success">Added Successfully.</div>');
+                        $("#DivErrorView").show();
+                        $('#DivErrorView').delay(2000).slideUp();
+                        fetchingdatas();
+                    } else {
+                        console.log("Insertion failed");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                    alert('An error occurred during the request. Please try again later.');
+                }
+            });
+        }
+    }
+
+    //function to fetch data from db using ajax
+    function fetchingdatas() {
+        $.ajax({
+            url: '@Url.Action("fetchingdata", "Product")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+
+                if (response.success) {
+
+                    var row = ""
+                    for (var i = 0; i < response.data.productList.length; i++) {
+                        row += '<tr>'
+                        row += '<td>' + response.data.productList[i].itemName + '</td>'
+                        row += '<td>' + response.data.productList[i].price + '</td>'
+                        row += '<td>' + response.data.productList[i].purchasePrice + '</td>'
+                        row += '<td>' + response.data.productList[i].sellingPrice + '</td>'
+                        row += '<td>' + response.data.productList[i].unit + '</td>'
+                        row += '<td>' + response.data.productList[i].description + '</td>'
+                        row += '<td>';
+                        row += '<button class="btn btn-warning btn-m " onclick="editProduct(' + response.data.productList[i].productId + ')">Edit</button>';
+                        row += '<button class="btn btn-danger btn-m" onclick="confirmDelete(' + response.data.productList[i].productId + ')">Delete</button>';
+                        row += '</td>';
+                        row += '</tr>'
+
+                        $('#listDiv tbody').html(row);
+                    }
+
+                    $('#listDiv').DataTable();
+
+                } else {
+                    alert("Failed to load product data.");
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("eroor")
+            }
+        })
+
+    }
+
+    $(document).ready(function () {
+        fetchingdatas();
+    })
+
+    //function to delete product from data table
+    var ProductsId;
+    function confirmDelete(productId) {
+        ProductsId = productId;
+        $("#DeleteModal").modal('show');
+    }
+    function confirmdelete() {
+        $.ajax({
+            url: '@Url.Action("Deleted", "Product")',
+            type: 'POST',
+            data: { Id: ProductsId },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $("#DeleteModal").modal('hide');
+                    fetchingdatas();                 
+                } else {
+                    alert("Failed to delete the item.");
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error: " + error);
+            }
+        });
+    }
+    $("#confirmdelete").click(function () {
+        confirmdelete();
+    })
+    //ajax function to fetch data according to its id and display in inputfield
+ 
+    var productIdToEdit;
+
+
+    function editProduct(ids) {
+      
+        productIdToEdit = ids;
+
+   
+        $("#EditModal").modal('show');
+    }
+
+
+    $("#confirmEdit").click(function () {
+  
+        fetchProductForEdit(productIdToEdit);
+  
+        $("#EditModal").modal('hide');
+    });
+
+
+    function fetchProductForEdit(productId) {
+        $.ajax({
+            url: '@Url.Action("Edit", "Product")',
+            type: 'GET',
+            dataType: 'json',
+            data: { ProductId: productId },
+            success: function (respo) {
+                if (respo.productList.length > 0) {
+        
+                    $("#ProductId").val(respo.productList[0].productId);
+                    $("#ItemName").val(respo.productList[0].itemName);
+                    $("#Price").val(respo.productList[0].price);
+                    $("#PurchasePrice").val(respo.productList[0].purchasePrice);
+                    $("#SellingPrice").val(respo.productList[0].sellingPrice);
+                    $("#Unit").val(respo.productList[0].unit);
+                    $("#Description").val(respo.productList[0].description);
+                    $("#ubutton").show();
+                    $("#sbutton").hide();
+                    $("#fbutton").hide();
+                } else {
+                    alert("Error while fetching product details.");
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error while fetching product details.");
+            }
+        });
+    }
+    function edit() {
+
+        var productid = $("#ProductId").val();
+        var itemname = $("#ItemName").val();
+        var price = $("#Price").val();
+        var pprice = $("#PurchasePrice").val();
+        var sprice = $("#SellingPrice").val();
+        var unit = $("#Unit").val();
+        var desc = $("#Description").val();
+
+        $.ajax({
+            url: '@Url.Action("Editing", "Product")',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                id: productid,
+                ItemName: itemname,
+                Price: price,
+                PurchasePrice: pprice,
+                SellingPrice: sprice,
+                Unit: unit,
+                Description: desc
+            },
+            success: function (response) {
+                if (response.success) {
+                    document.getElementById('DivErrorView').style.display = 'block';
+                    $("#DivErrorView").html('<div class="alert alert-success">Updated successfully.</div>');
+                    $("#DivErrorView").show();
+                    $('#DivErrorView').delay(2000).slideUp();
+                    $("#ProductId").val('');
+                    $("#ItemName").val('');
+                    $("#Price").val('');
+                    $("#PurchasePrice").val('');
+                    $("#SellingPrice").val('');
+                    $("#Unit").val('');
+                    $("#Description").val('');
+                    fetchingdatas();
+                    sbutton.style.display = 'inline-block'
+                    ubutton.style.display = 'none'
+                }
+                else {
+                    alert("error while updating")
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("error")
+            }
+        })
+    }
+
+
+
+</script>
+
+
+
+
+
+
+
+

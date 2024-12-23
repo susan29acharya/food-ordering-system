@@ -1,0 +1,19 @@
+nav {
+    border-bottom: 0.5px solid #e8ebec;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.nav-item.dropdown .dropdown-menu {
+    display: none;
+
+}
+#logout{
+    margin-left:75%;
+}
+#logout:hover{
+    cursor:pointer;
+}
+

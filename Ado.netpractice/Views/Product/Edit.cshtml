@@ -1,0 +1,108 @@
+﻿@model Ado.netpractice.Models.ProductRequestModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+
+<h1>Edit</h1>
+
+<h4>ProductRequestModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ItemName" class="control-label"></label>
+                <input asp-for="ItemName" class="form-control" />
+                <span asp-validation-for="ItemName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchasePrice" class="control-label"></label>
+                <input asp-for="PurchasePrice" class="form-control" />
+                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SellingPrice" class="control-label"></label>
+                <input asp-for="SellingPrice" class="form-control" />
+                <span asp-validation-for="SellingPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Unit" class="control-label"></label>
+                <input asp-for="Unit" class="form-control" />
+                <span asp-validation-for="Unit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" class="mb-1" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group" >
+                <button type="button" class="btn btn-success" onclick="edit(@Model.ProductId)">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-1">
+    <a asp-action="fetchingdata" class="btn btn-secondary">Back to List</a>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    function edit(ids) {
+        var itemname = $("#ItemName").val();
+        var price = $("#Price").val();
+        var pprice = $("#PurchasePrice").val();
+        var sprice = $("#SellingPrice").val();
+        var unit = $("#Unit").val();
+        var desc = $("#Description").val();
+
+        if (confirm("confirm Edit ?")) {
+            $.ajax({
+                url: '@Url.Action("Editing", "Product")',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    id : ids,
+                    ItemName: itemname,
+                    Price: price,
+                    PurchasePrice: pprice,
+                    SellingPrice: sprice,
+                    Unit: unit,
+                    Description: desc
+                },
+                success: function (respo) {
+                    if (respo.success) {
+                        window.location.href="@Url.Action("fetchingdata","Product")"
+                    }
+                    else {
+                        alert("error while updating")
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("error")
+                }
+
+
+            })
+
+
+
+
+        }
+    }
+
+
+
+</script>
+

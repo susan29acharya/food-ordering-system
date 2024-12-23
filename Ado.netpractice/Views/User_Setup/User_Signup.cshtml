@@ -1,0 +1,99 @@
+﻿@model Ado.netpractice.Models.UserSignup
+
+@{
+    Layout = null;
+
+}
+<link href="~/css/Signup.css" rel="stylesheet" />
+
+
+<div id="container">
+    <h2>User Signup</h2>
+
+    <div class="input-group mb-3 w-25">
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" id="username">
+    </div>
+
+    <div class="input-group mb-3  w-25">
+        <input type="text" class="form-control" placeholder="firstname" aria-label="Username" aria-describedby="basic-addon1" id="firstname">
+    </div>
+
+    <div class="input-group mb-3  w-25">
+        <input type="text" class="form-control" placeholder="lastname" aria-label="Username" aria-describedby="basic-addon1" id="lastname">
+    </div>
+
+    <div class="input-group mb-3  w-25">
+        <input type="text" class="form-control" placeholder="email" aria-label="Username" aria-describedby="basic-addon1" id="email">
+    </div>
+
+    <div class="input-group mb-3  w-25">
+        <input type="text" class="form-control" placeholder="Mobile Number" aria-label="Username" aria-describedby="basic-addon1" id="mobilenumber">
+    </div>
+
+    <div class="input-group mb-3  w-25">
+        <input type="password" class="form-control" placeholder="password" aria-label="Username" aria-describedby="basic-addon1" id="password">
+    </div>
+    <div id="button">
+        <input type="button" value="Signup" class="btn btn-success" onclick="Signup();" />
+        <p>Already have an account?<a asp-controller="User_Setup" asp-action="User_Login">Login</a></p>
+    </div>
+
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    function Signup() {
+
+        var username = $("#username").val();
+        var firstname = $("#firstname").val();
+        var lastname = $("#lastname").val();
+        var email = $("#email").val();
+        var mobilenumber = $("#mobilenumber").val();
+        var password = $("#password").val();
+
+        if (username == '' || firstname == '' || lastname == '' || email == '' || mobilenumber == '' || password == '') {
+            alert("All field are required !!");
+            return;
+        }
+
+
+        $.ajax({
+            url: '@Url.Action("User_Signup", "User_Setup")',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                UserName: username,
+                FirstName: firstname,
+                LastName: lastname,
+                Email: email,
+                MobileNo: mobilenumber,
+                Pwd: password
+            },
+            success: function (response) {
+
+                if (response.code == 1) {
+                    alert("alreadyyyyyyyyyyyyyyyyy");
+                    username = $("#username").val('');
+                    firstname = $("#firstname").val('');
+                    lastname = $("#lastname").val('');
+                    email = $("#email").val('');
+                    mobilenumber = $("#mobilenumber").val('');
+                    password = $("#password").val('');
+                    window.location.href = '@Url.Action("User_Signup", "User_Setup")';
+                }
+                else {
+                    alert(response.message);
+                    window.location.href = '@Url.Action("User_Login", "User_Setup")';
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("error")
+            }
+        })
+
+    }
+
+</script>
+
+

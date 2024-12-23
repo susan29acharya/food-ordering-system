@@ -1,0 +1,62 @@
+﻿@model Ado.netpractice.Models.UserSignup
+@{
+    Layout = null;
+
+}
+<link href="~/css/Login.css" rel="stylesheet" />
+<div id="container">
+    <h2>User Login</h2>
+    <div class="input-group mb-3 w-25">
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" id="username">
+    </div>
+    <div class="input-group mb-3  w-25">
+        <input type="password" class="form-control" placeholder="password" aria-label="Username" aria-describedby="basic-addon1" id="password">
+    </div>
+    <div id="button">
+    <input type="button" class="btn btn-success" onclick="Login();" value="Login" />
+    </div>
+    <p>dont have an account?<a asp-controller="User_Setup" asp-action="User_Signup">Signup</a></p>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+
+    function Login() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        if (username == '' || password == '') {
+            alert("Enter username and password")
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("User_Login", "User_Setup")',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    UserName: username,
+                    Pwd: password
+                },
+                success: function (response) {
+                    if (response.code == 1) {
+                        window.location.href = '@Url.Action("Index", "Product")';
+                    }
+                    else if (response.code == 2) {
+                        alert(response.message);
+                        window.location.href = '@Url.Action("User_Login", "User_Setup")';
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr, status, errror) {
+                    alert("errorrrrrrrr")
+                }
+            })
+        }
+    }
+
+
+</script>
+
