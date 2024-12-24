@@ -19,7 +19,7 @@
 </div>
 
 
-<div id="Search">
+<div id="Search" >
     <input type="text" placeholder="Search Product" id="Search_Product" />
     <input type="button" value="search" class="btn btn-success" onclick="search_product();" />
 </div>
@@ -36,7 +36,7 @@
             <div id="tablenumber">
                 <h6>Table Number:</h6><h6 id="Choosed-Tableresult"></h6>
             </div>
-            <input type="submit" value="Hold" class="btn btn-warning" onclick="holdingOrder();" />
+            <input type="submit" value="Hold" class="btn btn-warning" onclick="holdingOrderModal();" />
             <table id="Order_List_Table" class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
@@ -116,17 +116,36 @@
     </div>
 
 </div>
+<!--modal for holding order-->
+<div class="modal" tabindex="-1" id="HoldModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hold Order</h5>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to hold the Order?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="HoldOrder();">Hold</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 <script>
+    $("#Search").hide();
     var Rowid;
-
     function search_product() {
         var inserted_item = $("#Search_Product").val();
-
+   
         $.ajax({
             url: '@Url.Action("Product_Search", "Product")',
             type: 'POST',
@@ -161,7 +180,6 @@
             }
         })
     }
- 
     function testorder(productId) {
         var productsId = productId;
         $.ajax({
@@ -176,9 +194,11 @@
                 var Order_List = '';
                 if (response && response.length > 0) {
                     for (var i = 0; i < response.length - 1; i++) {
+                        var j = 1;
                         Order_List += `
                                     <tr>
-                                    <td id="Rowid">${response[i].rowId}</td>
+                                    <td>${j}</td>
+                                    <td id="Rowid" hidden>${response[i].rowId}</td>
                                     <td id="productname">${response[i].itemName}</td>
                                     <td id="productprice">${response[i].price}</td>
                                     <td id="productquantity"> ${response[i].quantity}</td>
@@ -190,6 +210,7 @@
                             $(".Total_Amount").html('<h5 id="totalAmount"> Total Amount =  ' + response[response.length - 1].totalAmount + '</h5>');
 
                         }
+                        j++;
                     }
                     $("#Order_List_Table tbody").html(Order_List);
                 }
@@ -281,8 +302,10 @@
                     for (var i = 0; i < response.length; i++) {
                         tableNumbers += response[i].tableNumber;
                     }
+                    $("#Search").show();
                     $("#Choosed-Tableresult").html(tableNumbers);
                     $("#dropdown").hide();
+                    
                 }
                 else {
                     alert("unable to fetch tablenumber")
@@ -308,7 +331,8 @@
             data: {
                 Quantity: quantity,
                 RowId: rowId,
-                ProductId: productId
+                ProductId: productId,
+                TableId: Tblid
             },
             success: function (response) {
 
@@ -353,5 +377,12 @@
                 alert("errorr")
             }
         })
+    }
+    function holdingOrderModal() {
+        $("#HoldModal").modal('show')
+    }
+    function HoldOrder() {
+        $("#HoldModal").modal('hide')
+        location.reload();
     }
 </script>

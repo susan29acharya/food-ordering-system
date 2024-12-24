@@ -283,6 +283,7 @@ public class DbConnection : IServiceDbConnection
             cmd.Parameters.AddWithValue("@Quantity", request.Quantity);
             cmd.Parameters.AddWithValue("@RowId", request.RowId);
             cmd.Parameters.AddWithValue("@ProductId", request.ProductId);
+            cmd.Parameters.AddWithValue("@TableNo", request.TableId);
 
             conn.Open();
 
