@@ -233,7 +233,16 @@ public class DbConnection : IServiceDbConnection
         {
             SqlCommand cmd = new SqlCommand("spinsertingdatas", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@flag", "tempinsert");
+
+            if (!string.IsNullOrEmpty(request.ProductId))
+            {
+                cmd.Parameters.AddWithValue("@flag", "tempinsert");
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@flag", "GetTableOrderList");
+            }
+            
             cmd.Parameters.AddWithValue("@ProductId", request.ProductId);
             cmd.Parameters.AddWithValue("@TableNo", request.TableId);
 
@@ -263,7 +272,7 @@ public class DbConnection : IServiceDbConnection
             {
                 ProductRequestModel lists = new ProductRequestModel
                 {
-                    TotalAmount = Convert.ToDouble(dr["TotalAmount"])
+                    TotalAmount = (dr["TotalAmount"].ToString())
                 };
                 Order_List.Add(lists);
             }
@@ -298,7 +307,6 @@ public class DbConnection : IServiceDbConnection
             }
 
         };
-
     }
 
     public bool DeleteItemRow(ProductRequestModel request)
@@ -327,5 +335,5 @@ public class DbConnection : IServiceDbConnection
         };
 
     }
-   
+    
 }

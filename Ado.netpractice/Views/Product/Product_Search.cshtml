@@ -7,19 +7,10 @@
 
 <h2>Product Search</h2>
 
-<div class="Table-flex" id="dropdown">
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" onclick="TableSetup();" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            Table Number
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="Table_Numbers">
-        </ul>
-    </div>
-    <input type="button" class="btn btn-primary " value="Add Table" onclick="AddTable();" />
-</div>
 
 
-<div id="Search" >
+
+<div id="Search">
     <input type="text" placeholder="Search Product" id="Search_Product" />
     <input type="button" value="search" class="btn btn-success" onclick="search_product();" />
 </div>
@@ -34,7 +25,6 @@
         <div id="Product_billing" class="Product_Bill">
             <h3>Payment</h3>
             <div id="tablenumber">
-                <h6>Table Number:</h6><h6 id="Choosed-Tableresult"></h6>
             </div>
             <input type="submit" value="Hold" class="btn btn-warning" onclick="holdingOrderModal();" />
             <table id="Order_List_Table" class="table table-bordered table-striped table-hover">
@@ -77,26 +67,7 @@
     </div>
 </div>
 
-<!--modal for table adding-->
-<div class="modal" tabindex="-1" id="AddTableModal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Table</h5>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="AddedTable" class="form-control w-50" placeholder="Add Table" aria-label="Add Table" aria-describedby="basic-addon1" required>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" onclick="Add_Table();">Add</button>
-            </div>
-            <div id="DivErrorView" style="display:none;"></div>
-        </div>
 
-    </div>
-
-</div>
 <!--modal for delete order list row-->
 <div class="modal" tabindex="-1" id="DeleteModal">
     <div class="modal-dialog modal-dialog-centered">
@@ -136,16 +107,63 @@
 
 </div>
 
+<!--Modal for showing list of tables-->
+<div class="modal " tabindex="-1" id="ListoftableModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">List of Tables</h5>
+            </div>
+            <div class="modal-body">
+                <div class="Table-flex mb-1" id="dropdown">
+                    <input type="button" class="btn btn-primary " value="Add Table" onclick="AddTable();" />
+                </div>
+                <div id="listoftables">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!--modal for table adding-->
+<div class="modal" tabindex="-1" id="AddTableModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Table</h5>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="AddedTable" class="form-control w-50" placeholder="Add Table" aria-label="Add Table" aria-describedby="basic-addon1" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="Add_Table();">Add</button>
+            </div>
+            <div id="DivErrorView" style="display:none;"></div>
+        </div>
+
+    </div>
+
+</div>
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 <script>
-    $("#Search").hide();
     var Rowid;
+    var Tblid;
+
+    $(document).ready(function () {
+             TableSetup();
+    })
+
     function search_product() {
-        var inserted_item = $("#Search_Product").val();
    
+        var inserted_item = $("#Search_Product").val();
+        debugger;
         $.ajax({
             url: '@Url.Action("Product_Search", "Product")',
             type: 'POST',
@@ -181,6 +199,7 @@
         })
     }
     function testorder(productId) {
+
         var productsId = productId;
         $.ajax({
             url: '@Url.Action("Add_Order_into_List", "Product")',
@@ -193,24 +212,25 @@
             success: function (response) {
                 var Order_List = '';
                 if (response && response.length > 0) {
+                    var j = 1;
                     for (var i = 0; i < response.length - 1; i++) {
-                        var j = 1;
-                        Order_List += `
-                                    <tr>
-                                    <td>${j}</td>
-                                    <td id="Rowid" hidden>${response[i].rowId}</td>
-                                    <td id="productname">${response[i].itemName}</td>
-                                    <td id="productprice">${response[i].price}</td>
-                                    <td id="productquantity"> ${response[i].quantity}</td>
-                                    <td id="productamount">${response[i].amount}</td>
-                                    <td><div id="flexingBtn"><input type = "submit" value="Delete" onclick="showdeletemodal(${response[i].rowId});" class="btn btn-danger"/> <button id="decrement" onclick="decrement('substract',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">-</button><button onclick="decrement('add',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">+</button></div></td>
-                                    </tr> `;
 
+                        Order_List += `
+                                                <tr>
+                                                <td>${j}</td>
+                                                <td id="Rowid" hidden>${response[i].rowId}</td>
+                                                <td id="productname">${response[i].itemName}</td>
+                                                <td id="productprice">${response[i].price}</td>
+                                                <td id="productquantity">${response[i].quantity}</td>
+                                                <td id="productamount">${response[i].amount}</td>
+                                                <td><div id="flexingBtn"><input type = "submit" value="Delete" onclick="showdeletemodal(${response[i].rowId});" class="btn btn-danger"/> <button id="decrement" onclick="decrement('substract',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">-</button><button onclick="decrement('add',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">+</button></div></td>
+                                                </tr> `;
+                        j++;
                         if (response[response.length - 1].totalAmount) {
                             $(".Total_Amount").html('<h5 id="totalAmount"> Total Amount =  ' + response[response.length - 1].totalAmount + '</h5>');
 
                         }
-                        j++;
+
                     }
                     $("#Order_List_Table tbody").html(Order_List);
                 }
@@ -225,98 +245,7 @@
 
         })
     }
-    function TableSetup() {
-        $.ajax({
-            url: '@Url.Action("Table_Number", "TableSetup")',
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                if (response && response.length > 0) {
-                    var Table_List = '';
-                    for (var i = 0; i < response.length; i++) {
-                        Table_List += '<li class="dropdown-item" onclick="TableNumber(' + response[i].tableId + ');">' + response[i].tableNumber + '</li>'
-                    }
-                    $("#Table_Numbers").html(Table_List);
-                    return;
-                }
-            },
-            error: function (xhr, error, status) {
-                alert("error while fetching table number")
-            }
-        })
-    }
-    function AddTable() {
-        $("#AddTableModal").modal('show');
-    }
-    function Add_Table() {
-        var AddedTable = $("#AddedTable").val();
-        if (AddedTable == '') {
-            alert("Enter the table")
-        }
-        else {
-            $.ajax({
-                url: '@Url.Action("Add_Table", "TableSetup")',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    tablename: AddedTable
-                },
-                success: function (response) {
-                    if (response.code == 0) {
-                        $("#AddedTable").val('');
-                        document.getElementById('DivErrorView').style.display = 'block';
-                        $("#DivErrorView").html('<div class="alert alert-danger">Table already exist.</div>');
-                        $("#DivErrorView").show();
-                        $('#DivErrorView').delay(1500).slideUp();
-                    }
-                    else {
-                        $("#AddedTable").val('');
-                        document.getElementById('DivErrorView').style.display = 'block';
-                        $("#DivErrorView").html('<div class="alert alert-success">Added Successfully.</div>');
-                        $("#DivErrorView").show();
-                        $('#DivErrorView').delay(1500).slideUp();
-                    }
-
-                },
-                error: function (xhr, status, error) {
-                    $("#DivErrorView").html('<div class="alert alert-danger">Error Found While Adding Records.</div>');
-                    $("#DivErrorView").show();
-                    $('#DivErrorView').delay(1500).slideUp();
-                }
-            })
-        }
-    }
-    var Tblid;
-    function TableNumber(TableIds) {
-        Tblid = TableIds
-        $.ajax({
-            url: '@Url.Action("Fetcing_TablenumByID", "TableSetup")',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                Tableid: Tblid
-            },
-            success: function (response) {
-                if (response) {
-                    var tableNumbers='';
-                    for (var i = 0; i < response.length; i++) {
-                        tableNumbers += response[i].tableNumber;
-                    }
-                    $("#Search").show();
-                    $("#Choosed-Tableresult").html(tableNumbers);
-                    $("#dropdown").hide();
-                    
-                }
-                else {
-                    alert("unable to fetch tablenumber")
-                }
-            },
-            error: function (xhr, error, status) {
-                alert("error")
-            }
-        })
-    }
-    function decrement(cmd, quantity, rowId, productId,Quantity) {
+    function decrement(cmd, quantity, rowId, productId, Quantity) {
 
         if (Quantity <= 1) {
             return;
@@ -358,7 +287,7 @@
     function ItemRowDelete() {
 
         $.ajax({
-            url: '@Url.Action("DeleteItemRow","Product")',
+            url: '@Url.Action("DeleteItemRow", "Product")',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -384,5 +313,77 @@
     function HoldOrder() {
         $("#HoldModal").modal('hide')
         location.reload();
+    }
+    function AddTable() {
+        $("#AddTableModal").modal('show');
+    }
+    function TableSetup() {
+        $("#ListoftableModal").modal('show');
+        $.ajax({
+            url: '@Url.Action("Table_Number", "TableSetup")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response && response.length > 0) {
+                    var Table_List = '';
+                    for (var i = 0; i < response.length; i++) {
+                        Table_List += `<div onclick="GetOrderList(${response[i].tableId},'${response[i].tableNumber}')">${response[i].tableNumber}</div>`;
+
+                    }
+                    $("#listoftables").html(Table_List);
+
+                    return;
+                }
+            },
+            error: function (xhr, error, status) {
+                alert("error while fetching table number")
+            }
+        })
+    }
+    function Add_Table() {
+        var AddedTable = $("#AddedTable").val();
+        if (AddedTable == '') {
+            alert("Enter the table")
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("Add_Table", "TableSetup")',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    tablename: AddedTable
+                },
+                success: function (response) {
+                    if (response.code == 0) {
+                        $("#AddedTable").val('');
+                        document.getElementById('DivErrorView').style.display = 'block';
+                        $("#DivErrorView").html('<div class="alert alert-danger">Table already exist.</div>');
+                        $("#DivErrorView").show();
+                        $('#DivErrorView').delay(1500).slideUp();
+                        TableSetup()
+                    }
+                    else {
+                        $("#AddedTable").val('');
+                        document.getElementById('DivErrorView').style.display = 'block';
+                        $("#DivErrorView").html('<div class="alert alert-success">Added Successfully.</div>');
+                        $("#DivErrorView").show();
+                        $('#DivErrorView').delay(1500).slideUp();
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    $("#DivErrorView").html('<div class="alert alert-danger">Error Found While Adding Records.</div>');
+                    $("#DivErrorView").show();
+                    $('#DivErrorView').delay(1500).slideUp();
+                }
+            })
+        }
+    }
+    function GetOrderList(tableId,tableName) {
+        Tblid = tableId;
+        var hiddenTableNo = document.getElementById('tablenumber');
+        hiddenTableNo.innerText = tableName;
+        $("#ListoftableModal").modal('hide');
+        testorder('');
     }
 </script>

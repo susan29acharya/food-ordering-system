@@ -13,6 +13,7 @@
     <link href="~/lib/datatables/css/datatables.bootstrap4.min.css" rel="stylesheet" />
 </head>
 <body>
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom  mb-3">
             <div class="container-fluid">
@@ -33,7 +34,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" mb-5>
                                 <li><a class="dropdown-item" asp-controller="Product" asp-action="GetProductList">Create Product</a></li>
-                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Product_Search">Search Product</a></li>
+                                <li><a class="dropdown-item" asp-controller="Product"  asp-action="Product_Search">Search Product</a></li>
                             </ul>                              
                      
                         </li>
@@ -65,6 +66,7 @@
             </div>
         </div>
     </div>
+   
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -86,4 +88,5 @@
     function confirmLogout() {
         window.location.href = '@Url.Action("User_Login", "User_Setup")';
     }
+  
 </script>

@@ -16,4 +16,19 @@ nav {
 #logout:hover{
     cursor:pointer;
 }
+#listoftables{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-gap:2%;
+}
+#tablediv {
+    height: 9vh;
+    width: 100%;
+    border-radius:4px;
+    border:1px solid gray;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:18px;
+}
 
