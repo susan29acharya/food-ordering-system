@@ -6,18 +6,18 @@ namespace Ado.netpractice.Models
     {
         public string? ItemName { get; set; }       
         public string ProductId { get; set; }     
-        public int? Price { get; set; }      
-        public int? PurchasePrice { get; set; }
-        public int? SellingPrice { get; set; }      
-        public int? Unit { get; set;}
+        public string? Price { get; set; }      
+        public string? PurchasePrice { get; set; }
+        public string? SellingPrice { get; set; }      
+        public string? Unit { get; set;}
         public string? Description { get; set; }
         public string? Flag { get; set; }
         public string? TableNo { get; set; }
-        public int ? Amount { get; set; }
-        public double? Quantity { get; set;}
+        public string? Amount { get; set; }
+        public string? Quantity { get; set;}
         public string? RowId { get; set; }
         public string ?TotalAmount { get; set; }
-        public int TableId { get; set; }
+        public string? TableId { get; set; }
 
         public string? TableName { get; set; }
     }

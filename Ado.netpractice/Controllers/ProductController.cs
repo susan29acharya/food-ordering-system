@@ -100,7 +100,6 @@ namespace Ado.netpractice.Controllers
         public IActionResult Add_Order_into_List(ProductRequestModel request)
         {
             var result = _productdal.Add_Order_into_List(request);
-
             return Json(result);
         }
         [HttpPost]

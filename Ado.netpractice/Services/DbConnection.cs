@@ -81,10 +81,10 @@ public class DbConnection : IServiceDbConnection
                 {
                     ItemName = row["ItemName"].ToString(),
                     ProductId = row["ProductId"].ToString(),
-                    Price = row["Price"] != DBNull.Value ? Convert.ToInt32(row["Price"]) : 0,
-                    PurchasePrice = row["PurchasePrice"] != DBNull.Value ? Convert.ToInt32(row["PurchasePrice"]) : 0,
-                    SellingPrice = row["SellingPrice"] != DBNull.Value ? Convert.ToInt32(row["SellingPrice"]) : 0,
-                    Unit = row["Unit"] != DBNull.Value ? Convert.ToInt32(row["Unit"]) : 0,
+                    Price = row["Price"].ToString(),
+                    PurchasePrice = row["PurchasePrice"].ToString(),
+                    SellingPrice = row["SellingPrice"].ToString(),
+                    Unit = row["Unit"].ToString(),
                     Description = row["Description"].ToString()
                 };
 
@@ -98,7 +98,7 @@ public class DbConnection : IServiceDbConnection
     }
     public ProductListModel Fetching_DataForEdit(ProductRequestModel request)
     {
-        //ProductRequestModel list = new ProductRequestModel();
+       
         List<ProductRequestModel> teslit = new List<ProductRequestModel>();
         var ProductListModel = new ProductListModel();
 
@@ -127,10 +127,10 @@ public class DbConnection : IServiceDbConnection
                 {
                     ItemName = row["ItemName"].ToString(),
                     ProductId = row["ProductId"].ToString(),
-                    Price = row["Price"] != DBNull.Value ? Convert.ToInt32(row["Price"]) : 0,
-                    PurchasePrice = row["PurchasePrice"] != DBNull.Value ? Convert.ToInt32(row["PurchasePrice"]) : 0,
-                    SellingPrice = row["SellingPrice"] != DBNull.Value ? Convert.ToInt32(row["SellingPrice"]) : 0,
-                    Unit = row["Unit"] != DBNull.Value ? Convert.ToInt32(row["Unit"]) : 0,
+                    Price = row["Price"].ToString(),
+                    PurchasePrice = row["PurchasePrice"].ToString(),
+                    SellingPrice = row["SellingPrice"].ToString(),
+                    Unit = row["Unit"].ToString(),
                     Description = row["Description"].ToString()
                 };
 
@@ -217,14 +217,13 @@ public class DbConnection : IServiceDbConnection
                 {
                     ProductId = row["ProductId"].ToString(),
                     ItemName = row["ItemName"].ToString(),
-                    Price = row["Price"] != DBNull.Value ? Convert.ToInt32(row["Price"]) : 0,
+                    Price = row["Price"].ToString()
                 };
                 list_of_product.Add(lists);
             }
         }
         return list_of_product;
     }
-
     public List<ProductRequestModel> Add_Order_into_List(ProductRequestModel request)
     {
         List<ProductRequestModel> Order_List = new List<ProductRequestModel>();
@@ -236,16 +235,14 @@ public class DbConnection : IServiceDbConnection
 
             if (!string.IsNullOrEmpty(request.ProductId))
             {
-                cmd.Parameters.AddWithValue("@flag", "tempinsert");
+                cmd.Parameters.AddWithValue("@flag", "tempinsert");         
             }
             else
             {
-                cmd.Parameters.AddWithValue("@flag", "GetTableOrderList");
-            }
-            
+                cmd.Parameters.AddWithValue("@flag", "GetTableOrderList");              
+            }           
             cmd.Parameters.AddWithValue("@ProductId", request.ProductId);
             cmd.Parameters.AddWithValue("@TableNo", request.TableId);
-
             conn.Open();
 
             SqlDataAdapter sdadapter = new SqlDataAdapter(cmd);
@@ -258,13 +255,12 @@ public class DbConnection : IServiceDbConnection
             {
                 ProductRequestModel lists = new ProductRequestModel
                 {
-                    RowId = dr["RowId"].ToString(),
-                    Price = dr["Rate"] != DBNull.Value ? (int?)Convert.ToDecimal(dr["Rate"]) : null,
-                    Amount = dr["Amount"] != DBNull.Value ? (int?)Convert.ToDecimal(dr["Amount"]) : null,
-                    Quantity = dr["Quantity"] != DBNull.Value ? (double?)Convert.ToDouble(dr["Quantity"]) : null,
+                    RowId = dr["RowId"] != DBNull.Value ? dr["RowId"].ToString() : null,
+                    Price = dr["Rate"] != DBNull.Value ?dr["Rate"].ToString(): null,
+                    Amount = dr["Amount"].ToString(),
+                    Quantity = dr["Quantity"].ToString(),
                     ItemName = dr["ItemName"].ToString(),
                     ProductId = dr["ProductId"].ToString()
-
                 };
                 Order_List.Add(lists);
             }
@@ -272,7 +268,7 @@ public class DbConnection : IServiceDbConnection
             {
                 ProductRequestModel lists = new ProductRequestModel
                 {
-                    TotalAmount = (dr["TotalAmount"].ToString())
+                    TotalAmount = dr["TotalAmount"].ToString()
                 };
                 Order_List.Add(lists);
             }

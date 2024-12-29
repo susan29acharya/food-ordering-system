@@ -4,11 +4,7 @@
 
 <link href="~/css/Product_Search.css" rel="stylesheet" />
 
-
 <h2>Product Search</h2>
-
-
-
 
 <div id="Search">
     <input type="text" placeholder="Search Product" id="Search_Product" />
@@ -157,11 +153,11 @@
     var Tblid;
 
     $(document).ready(function () {
-             TableSetup();
+        TableSetup();
     })
 
     function search_product() {
-   
+
         var inserted_item = $("#Search_Product").val();
         debugger;
         $.ajax({
@@ -210,21 +206,22 @@
                 TableId: Tblid
             },
             success: function (response) {
+
                 var Order_List = '';
                 if (response && response.length > 0) {
                     var j = 1;
                     for (var i = 0; i < response.length - 1; i++) {
 
                         Order_List += `
-                                                <tr>
-                                                <td>${j}</td>
-                                                <td id="Rowid" hidden>${response[i].rowId}</td>
-                                                <td id="productname">${response[i].itemName}</td>
-                                                <td id="productprice">${response[i].price}</td>
-                                                <td id="productquantity">${response[i].quantity}</td>
-                                                <td id="productamount">${response[i].amount}</td>
-                                                <td><div id="flexingBtn"><input type = "submit" value="Delete" onclick="showdeletemodal(${response[i].rowId});" class="btn btn-danger"/> <button id="decrement" onclick="decrement('substract',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">-</button><button onclick="decrement('add',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">+</button></div></td>
-                                                </tr> `;
+                                      <tr>
+                                      <td>${j}</td>
+                                      <td id="Rowid" hidden>${response[i].rowId}</td>
+                                      <td id="productname">${response[i].itemName}</td>
+                                      <td id="productprice">${response[i].price}</td>
+                                      <td id="productquantity">${response[i].quantity}</td>
+                                      <td id="productamount">${response[i].amount}</td>
+                                      <td><div id="flexingBtn"><input type = "submit" value="Delete" onclick="showdeletemodal(${response[i].rowId});" class="btn btn-danger"/> <button id="decbtn" onclick="decrement('substract',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">-</button><button id="increbtn" onclick="decrement('add',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">+</button></div></td>
+                                      </tr> `;
                         j++;
                         if (response[response.length - 1].totalAmount) {
                             $(".Total_Amount").html('<h5 id="totalAmount"> Total Amount =  ' + response[response.length - 1].totalAmount + '</h5>');
@@ -241,15 +238,13 @@
             error: function (xhr, status, error) {
                 alert("error");
             }
-
-
         })
     }
     function decrement(cmd, quantity, rowId, productId, Quantity) {
-
-        if (Quantity <= 1) {
-            return;
+        if (cmd == 'substract' && Quantity <= 1) {
+            $("#decbtn").style.display = 'disabled';
         }
+
         if (cmd == 'substract') {
             quantity = -1;
         }
@@ -327,13 +322,12 @@
                 if (response && response.length > 0) {
                     var Table_List = '';
                     for (var i = 0; i < response.length; i++) {
-                        Table_List += `<div onclick="GetOrderList(${response[i].tableId},'${response[i].tableNumber}')">${response[i].tableNumber}</div>`;
-
-                    }
+                        Table_List += `<div id="tablediv" onclick="GetOrderList(${response[i].tableId},'${response[i].tableNumber}')">${response[i].tableNumber}</div>`;
+                    }             
                     $("#listoftables").html(Table_List);
-
-                    return;
+                    
                 }
+                
             },
             error: function (xhr, error, status) {
                 alert("error while fetching table number")
@@ -361,6 +355,7 @@
                         $("#DivErrorView").show();
                         $('#DivErrorView').delay(1500).slideUp();
                         TableSetup()
+                        $("#AddTableModal").modal('hide');
                     }
                     else {
                         $("#AddedTable").val('');
@@ -368,6 +363,7 @@
                         $("#DivErrorView").html('<div class="alert alert-success">Added Successfully.</div>');
                         $("#DivErrorView").show();
                         $('#DivErrorView').delay(1500).slideUp();
+                        $("#AddTableModal").modal('hide');
                     }
 
                 },
@@ -379,7 +375,7 @@
             })
         }
     }
-    function GetOrderList(tableId,tableName) {
+    function GetOrderList(tableId, tableName) {
         Tblid = tableId;
         var hiddenTableNo = document.getElementById('tablenumber');
         hiddenTableNo.innerText = tableName;
