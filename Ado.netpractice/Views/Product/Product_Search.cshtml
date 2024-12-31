@@ -154,6 +154,7 @@
 
     $(document).ready(function () {
         TableSetup();
+
     })
 
     function search_product() {
@@ -213,15 +214,15 @@
                     for (var i = 0; i < response.length - 1; i++) {
 
                         Order_List += `
-                                      <tr>
-                                      <td>${j}</td>
-                                      <td id="Rowid" hidden>${response[i].rowId}</td>
-                                      <td id="productname">${response[i].itemName}</td>
-                                      <td id="productprice">${response[i].price}</td>
-                                      <td id="productquantity">${response[i].quantity}</td>
-                                      <td id="productamount">${response[i].amount}</td>
-                                      <td><div id="flexingBtn"><input type = "submit" value="Delete" onclick="showdeletemodal(${response[i].rowId});" class="btn btn-danger"/> <button id="decbtn" onclick="decrement('substract',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">-</button><button id="increbtn" onclick="decrement('add',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">+</button></div></td>
-                                      </tr> `;
+                                              <tr>
+                                              <td>${j}</td>
+                                              <td id="Rowid" hidden>${response[i].rowId}</td>
+                                              <td id="productname">${response[i].itemName}</td>
+                                              <td id="productprice">${response[i].price}</td>
+                                              <td id="productquantity">${response[i].quantity}</td>
+                                              <td id="productamount">${response[i].amount}</td>
+                                              <td><div id="flexingBtn"><input type = "submit" value="Delete" onclick="showdeletemodal(${response[i].rowId});" class="btn btn-danger"/> <button id="decbtn" onclick="decrement('substract',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">-</button><button id="increbtn" onclick="decrement('add',1,${response[i].rowId},${response[i].productId},${response[i].quantity});">+</button></div></td>
+                                              </tr> `;
                         j++;
                         if (response[response.length - 1].totalAmount) {
                             $(".Total_Amount").html('<h5 id="totalAmount"> Total Amount =  ' + response[response.length - 1].totalAmount + '</h5>');
@@ -314,20 +315,32 @@
     }
     function TableSetup() {
         $("#ListoftableModal").modal('show');
+
         $.ajax({
             url: '@Url.Action("Table_Number", "TableSetup")',
             type: 'GET',
             dataType: 'json',
             success: function (response) {
+                debugger;
+
                 if (response && response.length > 0) {
                     var Table_List = '';
+
                     for (var i = 0; i < response.length; i++) {
-                        Table_List += `<div id="tablediv" onclick="GetOrderList(${response[i].tableId},'${response[i].tableNumber}')">${response[i].tableNumber}</div>`;
-                    }             
+                        var tableId = `tablediv${i}`;
+                           if (response[i].status == 0) {
+                            Table_List += `<div id="${tableId}" class='tablediv' style='background-color:#9ccc65;' onclick="GetOrderList(${response[i].tableId},'${response[i].tableNumber}')">${response[i].tableNumber} </div>`;
+
+                        }
+                        else {
+                            Table_List += `<div id="${tableId}" class='tablediv' style='background-color:#ef5350;' onclick="GetOrderList(${response[i].tableId},'${response[i].tableNumber}')">${response[i].tableNumber} </div>`;
+                        }
+                    }
+
                     $("#listoftables").html(Table_List);
-                    
+
                 }
-                
+
             },
             error: function (xhr, error, status) {
                 alert("error while fetching table number")
@@ -354,7 +367,7 @@
                         $("#DivErrorView").html('<div class="alert alert-danger">Table already exist.</div>');
                         $("#DivErrorView").show();
                         $('#DivErrorView').delay(1500).slideUp();
-                        TableSetup()
+                        TableSetup();
                         $("#AddTableModal").modal('hide');
                     }
                     else {
@@ -364,6 +377,7 @@
                         $("#DivErrorView").show();
                         $('#DivErrorView').delay(1500).slideUp();
                         $("#AddTableModal").modal('hide');
+                        TableSetup();
                     }
 
                 },
@@ -382,4 +396,5 @@
         $("#ListoftableModal").modal('hide');
         testorder('');
     }
+
 </script>

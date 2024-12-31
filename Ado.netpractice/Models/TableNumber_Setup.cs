@@ -5,5 +5,6 @@
         public int TableId { get; set; }
         public string TableNumber { get; set; }
         public int ResponseCode { get; set; }
+        public string Status { get; set; }
     }
 }

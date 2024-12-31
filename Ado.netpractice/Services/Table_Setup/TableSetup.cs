@@ -42,7 +42,8 @@ namespace Ado.netpractice.Services.Table_Setup
                     TableNumber_Setup TableList = new TableNumber_Setup
                     {
                         TableId = (int)dr["TableId"],
-                        TableNumber = dr["TableNumber"].ToString()
+                        TableNumber = dr["TableNumber"].ToString(),
+                        Status = dr["STATUS"].ToString()
                     };
                     TableNumbers.Add(TableList);
                 }

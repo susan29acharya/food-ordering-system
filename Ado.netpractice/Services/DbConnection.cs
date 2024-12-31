@@ -98,7 +98,7 @@ public class DbConnection : IServiceDbConnection
     }
     public ProductListModel Fetching_DataForEdit(ProductRequestModel request)
     {
-       
+
         List<ProductRequestModel> teslit = new List<ProductRequestModel>();
         var ProductListModel = new ProductListModel();
 
@@ -235,12 +235,12 @@ public class DbConnection : IServiceDbConnection
 
             if (!string.IsNullOrEmpty(request.ProductId))
             {
-                cmd.Parameters.AddWithValue("@flag", "tempinsert");         
+                cmd.Parameters.AddWithValue("@flag", "tempinsert");
             }
             else
             {
-                cmd.Parameters.AddWithValue("@flag", "GetTableOrderList");              
-            }           
+                cmd.Parameters.AddWithValue("@flag", "GetTableOrderList");
+            }
             cmd.Parameters.AddWithValue("@ProductId", request.ProductId);
             cmd.Parameters.AddWithValue("@TableNo", request.TableId);
             conn.Open();
@@ -256,11 +256,12 @@ public class DbConnection : IServiceDbConnection
                 ProductRequestModel lists = new ProductRequestModel
                 {
                     RowId = dr["RowId"] != DBNull.Value ? dr["RowId"].ToString() : null,
-                    Price = dr["Rate"] != DBNull.Value ?dr["Rate"].ToString(): null,
+                    Price = dr["Rate"] != DBNull.Value ? dr["Rate"].ToString() : null,
                     Amount = dr["Amount"].ToString(),
                     Quantity = dr["Quantity"].ToString(),
                     ItemName = dr["ItemName"].ToString(),
-                    ProductId = dr["ProductId"].ToString()
+                    ProductId = dr["ProductId"].ToString(),
+           
                 };
                 Order_List.Add(lists);
             }
@@ -272,6 +273,7 @@ public class DbConnection : IServiceDbConnection
                 };
                 Order_List.Add(lists);
             }
+
             return Order_List;
         }
     }
@@ -331,5 +333,6 @@ public class DbConnection : IServiceDbConnection
         };
 
     }
-    
+
+
 }

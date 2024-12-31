@@ -142,9 +142,10 @@ input{
     display: grid;
     grid-template-columns: repeat(3,1fr);
     grid-gap: 2%;
+    overflow-y:auto;
 }
 
-#tablediv {
+.tablediv {
     height: 9vh;
     width: 100%;
     border-radius: 4px;
@@ -154,7 +155,7 @@ input{
     align-items: center;
     font-size: 18px;
 }
-#tablediv:hover{
+.tablediv:hover{
     cursor:pointer;
 }
 #ListoftableModal{
