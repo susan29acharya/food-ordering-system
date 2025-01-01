@@ -1,6 +1,7 @@
 ﻿using Ado.netpractice.Models;
 using Ado.netpractice.Services;
 using Azure.Core;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.CodeAnalysis;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -8,10 +9,12 @@ using System.Data;
 public class DbConnection : IServiceDbConnection
 {
     private readonly IConfiguration _configuration;
+  
 
     public DbConnection(IConfiguration configuration)
     {
         _configuration = configuration;
+     
     }
 
     public string GetUsers()
@@ -20,22 +23,30 @@ public class DbConnection : IServiceDbConnection
         return connstring;
     }
 
-    public bool Insert_Product(ProductRequestModel products)
+    public bool Insert_Product(ProductRequestModel produtdtls)
     {
         int id = 0;
+        var filename = Path.GetFileName(produtdtls.formFile.FileName);
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/Images", filename);
+        using (var stream = new FileStream(path, FileMode.Create))
+        {
+            produtdtls.formFile.CopyTo(stream);
+        }
+        produtdtls.ImagePath = Path.Combine("Images", filename);
+
         using (SqlConnection conn = new SqlConnection(GetUsers()))
         {
             SqlCommand cmd = new SqlCommand("spinsertingdatas", conn);
             cmd.CommandType = CommandType.StoredProcedure;
             //   cmd.Parameters.AddWithValue("@ProductId", products.ProductId);
-            cmd.Parameters.AddWithValue("@ItemName", products.ItemName);
-            cmd.Parameters.AddWithValue("@Price", products.Price);
-            cmd.Parameters.AddWithValue("@PurchasePrice", products.PurchasePrice);
-            cmd.Parameters.AddWithValue("@SellingPrice", products.SellingPrice);
-            cmd.Parameters.AddWithValue("@Unit", products.Unit);
-            cmd.Parameters.AddWithValue("@Description", products.Description);
+            cmd.Parameters.AddWithValue("@ItemName", produtdtls.ItemName);
+            cmd.Parameters.AddWithValue("@Price", produtdtls.Price);
+            cmd.Parameters.AddWithValue("@PurchasePrice", produtdtls.PurchasePrice);
+            cmd.Parameters.AddWithValue("@SellingPrice", produtdtls.SellingPrice);
+            cmd.Parameters.AddWithValue("@Unit", produtdtls.Unit);
+            cmd.Parameters.AddWithValue("@Description", produtdtls.Description);
+            cmd.Parameters.AddWithValue("@ImagePath", produtdtls.ImagePath);
             cmd.Parameters.AddWithValue("@flag", "I");
-
 
             conn.Open();
             id = cmd.ExecuteNonQuery();
@@ -217,7 +228,8 @@ public class DbConnection : IServiceDbConnection
                 {
                     ProductId = row["ProductId"].ToString(),
                     ItemName = row["ItemName"].ToString(),
-                    Price = row["Price"].ToString()
+                    Price = row["Price"].ToString(),
+                    ImagePath = row["ImagePath"].ToString()                   
                 };
                 list_of_product.Add(lists);
             }

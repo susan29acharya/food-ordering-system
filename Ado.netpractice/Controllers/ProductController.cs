@@ -1,17 +1,21 @@
 ﻿using Ado.netpractice.Models;
 using Azure.Core;
+using System.IO;
 using global::Ado.netpractice.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Ado.netpractice.Controllers
 {
     public class ProductController : Controller
     {
         public readonly IServiceDbConnection _productdal;
+       
 
         public ProductController(IServiceDbConnection productDal)
         {
             _productdal = productDal;
+           
         }
         public IActionResult Index()
         {
@@ -27,8 +31,7 @@ namespace Ado.netpractice.Controllers
         [HttpPost]
         public IActionResult InsertProductList(ProductRequestModel produtdtls)
         {
-
-                var response = _productdal.Insert_Product(produtdtls);
+            var response = _productdal.Insert_Product(produtdtls);
                
                 if (response)
                 {     

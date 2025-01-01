@@ -31,18 +31,20 @@
 
     <div class="input-group mb-3 w-25">
         <input type="number" class="form-control" asp-for="SellingPrice" placeholder="Selling price" aria-label="Username" aria-describedby="basic-addon1" required>
-
     </div>
 
     <div class="input-group mb-3 w-25">
         <input type="number" class="form-control" asp-for="Unit" placeholder="unit" aria-label="Username" aria-describedby="basic-addon1" required>
 
     </div>
+    <div class="mb-3  w-25">
+        <input class="form-control" type="file" id="formFile" name="formFile">
+    </div>
 
     <div class="input-group mb-3 w-25">
         <input type="text" class="form-control" asp-for="Description" placeholder="Description" aria-label="Username" aria-describedby="basic-addon1" required>
-
     </div>
+
     <div class=" mb-3 ">
         <input type="submit" class="btn btn-success" onclick="submit()" id="sbutton" />
         <input type="submit" class="btn btn-success" onclick="fetchingdatas()" value="fetch" id="fbutton" hidden />
@@ -127,19 +129,24 @@
             var sprice = $("#SellingPrice").val();
             var unit = $("#Unit").val();
             var desc = $("#Description").val();
+            var formFile = $("#formFile")[0].files[0]; 
+
+            var formData = new FormData();
+            formData.append('ItemName', itemname);
+            formData.append('Price', price);
+            formData.append('PurchasePrice', pprice);
+            formData.append('SellingPrice', sprice);
+            formData.append('Unit', unit);
+            formData.append('Description', desc);
+            formData.append('formFile', formFile);  
 
             $.ajax({
                 url: '@Url.Action("InsertProductList", "Product")',
                 type: 'POST',
-                dataType: 'json',
-                data: {
-                    ItemName: itemname,
-                    Price: price,
-                    PurchasePrice: pprice,
-                    SellingPrice: sprice,
-                    Unit: unit,
-                    Description: desc
-                },
+                data: formData,
+                dataType:'json',
+                processData: false,  
+                contentType: false,  
                 success: function (respo) {
                     if (respo) {
                         $("#ProductId").val('');
@@ -165,6 +172,7 @@
             });
         }
     }
+
 
     //function to fetch data from db using ajax
     function fetchingdatas() {

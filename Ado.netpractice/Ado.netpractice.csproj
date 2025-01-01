@@ -31,6 +31,10 @@
     <Content Remove="Views\Product\Dashboard.cshtml" />
     <Content Remove="Views\Product\Edit.cshtml" />
     <Content Remove="Views\Product\fetchingdata.cshtml" />
+    <Content Remove="wwwroot\Images\Images\Screenshot %281%29.png" />
+    <Content Remove="wwwroot\Images\Images\Screenshot %282%29.png" />
+    <Content Remove="wwwroot\Images\Images\Screenshot %283%29.png" />
+    <Content Remove="wwwroot\Images\samosa.png" />
     <Content Remove="wwwroot\js\datatables.css" />
     <Content Remove="wwwroot\js\datatables.js" />
     <Content Remove="wwwroot\js\datatables.min.css" />

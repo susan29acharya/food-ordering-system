@@ -169,20 +169,21 @@
                 Itemnames: inserted_item
             },
             success: function (response) {
+                debugger;
                 if (response && response.length > 0) {
                     $("#Related_Product").empty();
 
-                    response.forEach(function (products) {
-                        var Product_Container = '<div class="product-item" onclick=testorder(' + products.productId + ');>' +
-                            '<div class="product-details">' +
-                            '<h3>' + products.itemName + '</h3>' +
-                            '<p hidden>Product ID: ' + products.productId + '</p>' +
-                            '<p>Price: ' + products.price + '</p>' +
-                            '</div>' +
+                    var Product_Container = '';
+                    for (var i = 0; i < response.length; i++) {
+                        var imageUrl = /Images/ + response[i].imagePath.replace(/\\/g,'/'); 
+                        Product_Container += '<div class="product-item"  onclick="testorder(' + response[i].productId + ');">' +
+                            '<img src="' + imageUrl + '" />' +
                             '</div>';
-                        $("#Related_Product").append(Product_Container);
+                    }
 
-                    })
+              
+                    $("#Related_Product").html(Product_Container);
+
                     $("#Search_Product").val('');
                 }
                 else {
