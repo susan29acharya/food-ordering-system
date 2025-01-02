@@ -70,7 +70,6 @@ namespace Ado.netpractice.Services.User_Setup
                 conn.Close();
                 return response;
             }
-
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Ado.netpractice.Models;
 using Ado.netpractice.Services;
-using Azure.Core;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.CodeAnalysis;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -103,7 +100,6 @@ public class DbConnection : IServiceDbConnection
             }
 
             ProductListModel.productList = teslit;
-
         }
         return ProductListModel;
     }
@@ -159,7 +155,7 @@ public class DbConnection : IServiceDbConnection
         {
             SqlCommand cmd = new SqlCommand("spinsertingdatas", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@flag", "D");
+            cmd.Parameters.AddWithValue("@flag","D");
             cmd.Parameters.AddWithValue("@ProductId", Id);
 
             conn.Open();
@@ -174,7 +170,6 @@ public class DbConnection : IServiceDbConnection
                 return false;
             }
         }
-
     }
 
     public bool Edit_Product(int id, ProductRequestModel prop)

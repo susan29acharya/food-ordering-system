@@ -43,16 +43,17 @@
     background-size:cover;
     background-repeat:no-repeat;
 }
-.product-item img{
-    height:25vh;
+/*.product-item img{
+    height:21vh;
     width:100%;
     border-radius:8px;
 }
+.product-item h6{
+    text-align:center;
+    letter-spacing:1px;
 
+}*/
 
-
-
-    
 .product-item:hover{
     cursor:pointer;
     transform:translateY(-2.5px);
