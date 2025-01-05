@@ -19,5 +19,10 @@
         public string Email { get; set; }
         public string MobileNo { get; set; }
     }
+    public class claimsData
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+    }                        
 
 }

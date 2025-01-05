@@ -35,7 +35,6 @@ public class DbConnection : IServiceDbConnection
         {
             SqlCommand cmd = new SqlCommand("spinsertingdatas", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            //   cmd.Parameters.AddWithValue("@ProductId", products.ProductId);
             cmd.Parameters.AddWithValue("@ItemName", produtdtls.ItemName);
             cmd.Parameters.AddWithValue("@Price", produtdtls.Price);
             cmd.Parameters.AddWithValue("@PurchasePrice", produtdtls.PurchasePrice);
@@ -43,7 +42,7 @@ public class DbConnection : IServiceDbConnection
             cmd.Parameters.AddWithValue("@Unit", produtdtls.Unit);
             cmd.Parameters.AddWithValue("@Description", produtdtls.Description);
             cmd.Parameters.AddWithValue("@ImagePath", produtdtls.ImagePath);
-            cmd.Parameters.AddWithValue("@flag", "I");
+            cmd.Parameters.AddWithValue("@flag","I");
 
             conn.Open();
             id = cmd.ExecuteNonQuery();
