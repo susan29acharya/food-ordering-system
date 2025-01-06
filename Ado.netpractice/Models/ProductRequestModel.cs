@@ -13,6 +13,7 @@ namespace Ado.netpractice.Models
         public string? Unit { get; set; }
         public string? Description { get; set; }
         public string? Flag { get; set; }
+        public string? CreatedBy { get; set; }
         public string? TableNo { get; set; }
         public string? Amount { get; set; }
         public string? Quantity { get; set; }

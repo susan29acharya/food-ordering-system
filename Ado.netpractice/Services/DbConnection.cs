@@ -248,6 +248,7 @@ public class DbConnection : IServiceDbConnection
                 cmd.Parameters.AddWithValue("@flag", "GetTableOrderList");
             }
             cmd.Parameters.AddWithValue("@ProductId", request.ProductId);
+            cmd.Parameters.AddWithValue("@user",request.CreatedBy);
             cmd.Parameters.AddWithValue("@TableNo", request.TableId);
             conn.Open();
 

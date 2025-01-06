@@ -1,9 +1,8 @@
 ﻿using Ado.netpractice.Models;
-using Azure.Core;
-using System.IO;
 using global::Ado.netpractice.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Ado.netpractice.Services.Claims;
 
 namespace Ado.netpractice.Controllers
 {
@@ -19,7 +18,10 @@ namespace Ado.netpractice.Controllers
         }
         public IActionResult Index()
         {
+            var a = HttpContext.GetClaimsData();
+            ViewBag.a = a.username;
             return View();
+           
         }
         
         public IActionResult GetProductList()
@@ -87,6 +89,8 @@ namespace Ado.netpractice.Controllers
         [HttpGet]
         public IActionResult Product_Search()
         {
+            var ab = HttpContext.GetClaimsData();
+            ViewBag.ab = ab.username;
             return View();
         }
 
@@ -94,7 +98,8 @@ namespace Ado.netpractice.Controllers
         //action to for searching product
         public IActionResult Product_Search(string Itemnames)
         {
-           var result = _productdal.Product_Search(Itemnames);
+            
+            var result = _productdal.Product_Search(Itemnames);
             return Json(result);
         }
 
@@ -102,6 +107,7 @@ namespace Ado.netpractice.Controllers
         //action for ordered_list
         public IActionResult Add_Order_into_List(ProductRequestModel request)
         {
+
             var result = _productdal.Add_Order_into_List(request);
             return Json(result);
         }

@@ -1,6 +1,7 @@
 using Ado.netpractice.Services;
 using Ado.netpractice.Services.Table_Setup;
 using Ado.netpractice.Services.User_Setup;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IServiceDbConnection,DbConnection>();
 builder.Services.AddScoped<IUser_setup, User_Setup>();
 builder.Services.AddScoped<ITableSetup, TableSetup>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+    options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(55);
+        options.LoginPath = "/User_Setup/User_Login";
+
+    });
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -26,7 +34,7 @@ app.UseStaticFiles();
 app.UseSession();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

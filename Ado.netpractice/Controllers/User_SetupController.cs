@@ -2,6 +2,7 @@
 using Ado.netpractice.Services.User_Setup;
 using Azure;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -41,11 +42,13 @@ namespace Ado.netpractice.Controllers
             new Claim("Username",response.UserName),
             new Claim("Password",response.Pwd)   
             };
-            var claimIdentity = new ClaimsIdentity(claims);
-            HttpContext.SignInAsync(new ClaimsPrincipal(claimIdentity));
+            var claimIdentity = new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity));
 
             return Json(new { message = response.ResponseMessage, code = response.ResponseCode });
         }
+
+      
 
     }
 }

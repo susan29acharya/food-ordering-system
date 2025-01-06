@@ -49,7 +49,7 @@ namespace Ado.netpractice.Services.User_Setup
 
         public UserResponseModel Users_Login(UserResponseModel Userproperty)
         {
-            UserResponseModel response = new UserResponseModel();
+            
             using (SqlConnection conn = new SqlConnection(connstring()))
             {
 
@@ -63,12 +63,12 @@ namespace Ado.netpractice.Services.User_Setup
                 {
                     if (reader.Read())
                     {
-                        response.ResponseCode = (int)reader["Responsecode"];
-                        response.ResponseMessage = reader["Responsemessage"].ToString();
+                        Userproperty.ResponseCode = (int)reader["Responsecode"];
+                        Userproperty.ResponseMessage = reader["Responsemessage"].ToString();
                     }
                 }
                 conn.Close();
-                return response;
+                return Userproperty;
             }
         }
     }
