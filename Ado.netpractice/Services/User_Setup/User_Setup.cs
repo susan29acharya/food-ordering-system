@@ -1,5 +1,6 @@
 ﻿using Ado.netpractice.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Data;
 
 namespace Ado.netpractice.Services.User_Setup
@@ -49,10 +50,8 @@ namespace Ado.netpractice.Services.User_Setup
 
         public UserResponseModel Users_Login(UserResponseModel Userproperty)
         {
-            
             using (SqlConnection conn = new SqlConnection(connstring()))
             {
-
                 SqlCommand cmd = new SqlCommand("SP_User_Setup", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@UserName", Userproperty.UserName);
@@ -71,5 +70,6 @@ namespace Ado.netpractice.Services.User_Setup
                 return Userproperty;
             }
         }
+
     }
 }

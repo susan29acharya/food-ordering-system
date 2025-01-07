@@ -1,8 +1,10 @@
 ﻿using Ado.netpractice.Models;
+using Ado.netpractice.Services.Claims;
 using Ado.netpractice.Services.User_Setup;
 using Azure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -47,8 +49,12 @@ namespace Ado.netpractice.Controllers
 
             return Json(new { message = response.ResponseMessage, code = response.ResponseCode });
         }
-
-      
-
+        public IActionResult AccessDenied()
+        {
+            var user = HttpContext.GetClaimsData();
+            ViewBag.user = user.username;
+           
+            return View();
+        }
     }
 }

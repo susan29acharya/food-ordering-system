@@ -13,10 +13,15 @@ builder.Services.AddScoped<ITableSetup, TableSetup>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
     options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(55);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
         options.LoginPath = "/User_Setup/User_Login";
+        options.AccessDeniedPath = "/User_Setup/AccessDenied";
 
     });
+builder.Services.AddAuthorization(Options =>
+{
+    Options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("Username","susan acharya","vinay sonar"));
+});
 builder.Services.AddSession();
 
 var app = builder.Build();

@@ -3,6 +3,7 @@ using global::Ado.netpractice.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Ado.netpractice.Services.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ado.netpractice.Controllers
 {
@@ -16,6 +17,8 @@ namespace Ado.netpractice.Controllers
             _productdal = productDal;
            
         }
+
+        [Authorize(Policy = "EmployeeOnly")]
         public IActionResult Index()
         {
             var a = HttpContext.GetClaimsData();
