@@ -20,13 +20,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization(Options =>
 {
-    Options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("Username","susan acharya","vinay sonar"));
+    Options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("Username","susan acharya"));
 });
 builder.Services.AddSession();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

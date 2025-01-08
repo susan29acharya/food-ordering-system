@@ -11,14 +11,12 @@ namespace Ado.netpractice.Controllers
     {
         public readonly IServiceDbConnection _productdal;
        
-
         public ProductController(IServiceDbConnection productDal)
         {
             _productdal = productDal;
            
         }
 
-        [Authorize(Policy = "EmployeeOnly")]
         public IActionResult Index()
         {
             var a = HttpContext.GetClaimsData();
@@ -26,13 +24,12 @@ namespace Ado.netpractice.Controllers
             return View();
            
         }
-        
+        [Authorize(Policy = "EmployeeOnly")]
         public IActionResult GetProductList()
         {
             return View();
         }
         //inserting data into database
-
         [HttpPost]
         public IActionResult InsertProductList(ProductRequestModel produtdtls)
         {
@@ -128,7 +125,5 @@ namespace Ado.netpractice.Controllers
             var response = _productdal.DeleteItemRow(request);
             return Json(response);
         }
-
-
     }
 }
