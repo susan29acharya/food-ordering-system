@@ -9,14 +9,12 @@ namespace Ado.netpractice.Controllers
 {
     public class ProductController : Controller
     {
-        public readonly IServiceDbConnection _productdal;
-       
+        public readonly IServiceDbConnection _productdal;       
         public ProductController(IServiceDbConnection productDal)
         {
             _productdal = productDal;
            
         }
-
         public IActionResult Index()
         {
             var a = HttpContext.GetClaimsData();
@@ -42,7 +40,6 @@ namespace Ado.netpractice.Controllers
             // If model validation fails, return to the form with errors
             return View(produtdtls);
         }
-
         //fetching data from database 
         [HttpGet]
         public IActionResult fetchingdata()

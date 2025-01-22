@@ -46,9 +46,9 @@
     </div>
 
     <div class=" mb-3 ">
-        <input type="submit" class="btn btn-success" onclick="submit()" id="sbutton" />
-        <input type="submit" class="btn btn-success" onclick="fetchingdatas()" value="fetch" id="fbutton" hidden />
-        <input type="submit" class="btn btn-success" onclick="edit()" value="update" id="ubutton" />
+        <input type="submit" class="btn btn-outline-success" onclick="submit()" id="sbutton" />
+        <input type="submit" class="btn btn-outline-success" onclick="fetchingdatas()" value="fetch" id="fbutton" hidden />
+        <input type="submit" class="btn btn-outline-success" onclick="edit()" value="update" id="ubutton" />
 
     </div>
 
@@ -198,7 +198,7 @@
                         row += '<button class="btn btn-danger btn-m" onclick="confirmDelete(' + response.data.productList[i].productId + ')">Delete</button>';
                         row += '</td>';
                         row += '</tr>'
-
+                     
                         $('#listDiv tbody').html(row);
                     }
 
